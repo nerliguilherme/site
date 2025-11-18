@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ngraph - Exemplo Completo</title>
+
+  <!-- Bootstrap (apenas pra carousel principal e utilitários) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --purple-1:#7a2cff;
+      --purple-2:#2a0635;
+      --purple-3:#4b1e8f;
+      --dark-bg:#140030;
+      --card-radius:20px;
+      --container-max:1200px;
+    }
+
+    *{box-sizing:border-box;font-family:"Poppins",sans-serif}
+    body{margin:0;background:var(--bg);color:#111;line-height:1.5}
+
+/* ========== NAVBAR ========== */
+.navbar{
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* ========== MAIN BOOTSTRAP CAROUSEL ========== */
+.carousel-item img{width:100%;height:70vh;object-fit:cover}
+@media (max-width:768px){ .carousel-item img{height:50vh} }
+
+/* ========== SECTION INTRO ========== */
+.section-intro{
+  padding:50px 20px;
+  text-align:center;
+  max-width:var(--container-max);
+  margin:0 auto;
+}
+.section-intro .subtitle{color:#777;margin-bottom:8px}
+.section-intro h1{
+  font-size:30px;
+  margin-bottom:22px;
+  font-weight:700;
+}
+@media (min-width:992px){ .section-intro h1{font-size:34px} }
+
+/* ========== CARDS GRID (SERVIÇOS) ========== */
+.cards-wrap{
+  max-width:var(--container-max);
+  margin: 0 auto 60px;
+  padding: 0 20px;
+}
+.cards-container{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:28px;
+}
+.card-service{
+  background: linear-gradient(135deg, rgba(122,44,255,0.95), rgba(75,30,143,0.95));
+  color:white;
+  padding:26px;
+  border-radius:var(--card-radius);
+  box-shadow: 0 10px 24px rgba(75,30,143,0.12);
+  position:relative;
+  overflow:hidden;
+  transform: translateY(0);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.card-service:hover{ transform: translateY(-8px); box-shadow: 0 20px 40px rgba(75,30,143,0.18) }
+
+/* icon circle */
+.card-service .icon {
+  width:56px;height:56px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);
+  display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px;
+  background: rgba(255,255,255,0.03);
+}
+.card-service h3{font-size:18px;margin:6px 0 10px;font-weight:700}
+.card-service p{font-size:13px;opacity:0.95;line-height:1.45}
+
+/* small variation for dark cards */
+.card-service.dark{
+  background: linear-gradient(135deg, #12031a, #2a0635);
+}
+
+/* responsive cards */
+@media (max-width:900px){
+  .cards-container{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:600px){
+  .cards-container{grid-template-columns:1fr}
+}
+
+/* ========== PHOTO PAIR (rounded large) ========== */
+.photo-section{padding:60px 0px 0px;background: #fff;text-align:center}
+.photo-section h2{font-size:24px;margin-bottom:30px;font-weight:700}
+.photo-row{
+  display:flex;
+  gap:40px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  max-width:1100px;margin:0 auto;
+}
+.photo-large{
+  width:420px;height:420px;object-fit:cover;border-radius:60px;box-shadow:0 12px 30px rgba(0,0,0,0.12);
+}
+@media (max-width:900px){ .photo-large{width:320px;height:320px;border-radius:36px} }
+@media (max-width:560px){ .photo-row{gap:16px} .photo-large{width:100%;height:auto;border-radius:22px} }
+
+/* ========== SERVICES HORIZONTAL CAROUSEL ========== */
+.services-wrapper{
+  position:relative;
+  max-width:var(--container-max);
+  margin:40px auto;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.arrow-btn{
+  background:linear-gradient(180deg,var(--purple-1),#5718bd);
+  color:#fff;border:none;padding:8px 14px;border-radius:12px;cursor:pointer;font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px rgba(122,44,255,0.18);
+}
+.services-carousel{
+  display:flex;gap:18px;padding:18px;border-radius:16px;overflow:hidden;flex:1;align-items:center;
+  background: linear-gradient(90deg, rgba(250,250,250,0.02), rgba(250,250,250,0.01));
+  scroll-behavior:smooth;
+}
+.services-carousel::-webkit-scrollbar{display:none}
+.service-img{
+  width:320px;height:420px;object-fit:cover;border-radius:28px;flex-shrink:0;
+  box-shadow:0 10px 28px rgba(0,0,0,0.15);transition:transform .25s;
+}
+.service-img:hover{ transform: translateY(-6px) }
+
+/* responsive adjustments */
+@media (max-width:900px){ .services-wrapper{padding:0 12px} .service-img{width:260px;height:170px} }
+@media (max-width:560px){ .arrow-btn{display:none} .service-img{width:200px;height:140px} }
+
+/* ========== FAQ SECTION ========== */
+.faq-section{
+  background: var(--dark-bg);
+  color:#fff;
+  padding:70px 20px;
+  text-align:center;
+}
+.faq-section h3{opacity:.85;margin-bottom:6px;font-weight:600}
+.faq-section h2{font-size:30px;margin-bottom:30px}
+.faq-container{max-width:760px;margin:0 auto;text-align:left}
+.faq-item{background:transparent;margin-bottom:14px;border-radius:10px;overflow:hidden}
+.faq-question{
+  display:flex;justify-content:space-between;align-items:center;padding:18px 20px;background:linear-gradient(90deg,var(--purple-1),#6931e6);
+  border-radius:8px;color:#fff;border:none;width:100%;cursor:pointer;font-weight:600;font-size:16px;
+  transition:background .25s;
+}
+.faq-question .chev{transition:transform .25s ease;display:inline-block}
+.faq-answer{
+  background:#2a0635;padding:18px 20px;border-radius:0 0 8px 8px;color:#e6ddff;display:none;
+  line-height:1.6;font-size:15px;
+}
+
+/* FAQ open state */
+.faq-item.open .faq-answer{display:block;animation:slideDown .32s ease}
+.faq-item.open .chev{transform:rotate(90deg)}
+
+/* slideDown */
+@keyframes slideDown{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ========== GENERAL ANIMATIONS / REVEAL ========== */
+.reveal {opacity:0;transform:translateY(12px);transition:opacity .5s ease, transform .5s ease}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+/* small utility */
+.center{display:block;margin:0 auto;text-align:center}
+.btn-green{
+  display:inline-block;padding:12px 20px;background:linear-gradient(90deg,#00e163,#00a640);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:18px;
+  box-shadow:0 8px 24px rgba(0,200,100,0.12)
+}
+
+/* footer spacing */
+footer{padding:40px 20px;text-align:center;color:#666}
+  </style>
+</head>
+<body>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid" style="max-width:var(--container-max);margin:0 auto;">
+      <img src="Design_sem_nome__1_-removebg-preview.png" style="width: 50px;" >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars" aria-controls="navbars" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbars">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicos">Serviços</a></li>
+          <li class="nav-item"><a class="nav-link" href="#fotos">Portfólio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">Dúvidas</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== MAIN BOOTSTRAP CAROUSEL ========== -->
+  <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width:var(--container-max);margin:20px auto 30px;">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="Instagram story - 5.jpg" alt="slide1">
+        <div class="carousel-caption d-none d-md-block">
+          <h5></h5>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="tds.jpg" alt="slide2">
+      </div>
+      <div class="carousel-item">
+        <img src="abc.jpg" alt="slide3">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- ========== INTRO & CARDS ========== -->
+  <section class="section-intro" id="servicos">
+    <p class="subtitle">Entendemos suas necessidades</p>
+    <h1>Descubra como podemos <strong>REVOLUCIONAR A SUA EMPRESA!</strong></h1>
+  </section>
+
+  <div class="cards-wrap reveal">
+    <div class="cards-container" aria-label="serviços">
+      <!-- Card 1 -->
+      <div class="card-service">
+        <div class="icon">🖨️</div>
+        <h3>Impressão Digital</h3>
+        <p>Alta definição, ideal para pequenas tiragens, materiais promocionais e personalizados.</p>
+      </div>
+
+      <!-- Card 2 (dark) -->
+      <div class="card-service dark">
+        <div class="icon">⚙️</div>
+        <h3>Impressão a Laser</h3>
+        <p>Velocidade e precisão para impressos corporativos, documentos e brindes.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-service">
+        <div class="icon">📈</div>
+        <h3>Fachadas de Empresas</h3>
+        <p>Impressão em lona, ACM, adesivos e painéis. Seu negócio com destaque profissional.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card-service dark">
+        <div class="icon">🤝</div>
+        <h3>Adesivos Personalizados</h3>
+        <p>Em diversos tamanhos e acabamentos, ideais para divulgação e identidade visual.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card-service">
+        <div class="icon">🕶️</div>
+        <h3>Cartazes, Banners e Outdoors</h3>
+        <p>Comunicação visual impactante para sua campanha.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card-service dark">
+        <div class="icon">👥</div>
+        <h3>Muito Mais!</h3>
+        <p>Conte com nossa equipe de especialistas para orientá-lo em todas as etapas de produção.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PHOTO PAIR ========== -->
+  <section class="photo-section" id="fotos">
+    <h2>Qualidade que você vê. Resultado que entrega.</h2>
+  </section>
+
+
+  <div class="services-wrapper reveal" style="margin-top:10px;">
+    <button class="arrow-btn" id="btnLeft" aria-label="scroll left">❮</button>
+
+    <div class="services-carousel" id="servicesCarousel" aria-live="polite">
+      <!-- Coloque quantas imagens quiser -->
+      <img src="WhatsApp Image 2025-11-17 at 17.49.18.jpeg" class="service-img" alt="serv1">
+      <img src="WhatsApp Image 2025-11-17 at 17.49.18 (1).jpeg" class="service-img" alt="serv2">
+      <img src="WhatsApp Image 2025-11-17 at 17.49.18 (2).jpeg" class="service-img" alt="serv3">
+      <img src="WhatsApp Image 2025-11-17 at 17.49.18 (3).jpeg" class="service-img" alt="serv4">
+      <img src="WhatsApp Image 2025-11-17 at 17.57.04.jpeg" class="service-img" alt="serv5">
+    </div>
+
+    <button class="arrow-btn" id="btnRight" aria-label="scroll right">❯</button>
+  </div>
+
+  <!-- ========== FAQ ========== -->
+  <section class="faq-section" id="faq">
+    <h3>Dúvidas Frequentes</h3>
+    <h2>Tem alguma dúvida?</h2>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Quais tipos de impressão vocês oferecem?</span>
+          <span class="chev">▸</span>
+        </button>
+        <div class="faq-answer">
+          Trabalhamos com impressão digital, impressão a laser e grandes formatos. Também fazemos fachadas, adesivos, banners, cartazes e muito mais!
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Vocês fazem fachadas completas para empresas?</span>
+          <span class="chev">▸</span>
+        </button>
+        <div class="faq-answer">
+          Sim! Criamos, produzimos e instalamos fachadas comerciais completas: projeto, produção e instalação.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Qual o prazo médio de entrega?</span>
+          <span class="chev">▸</span>
+        </button>
+        <div class="faq-answer">
+          O prazo varia conforme o tipo de material e quantidade. Geralmente entre 2 e 7 dias úteis. Para grandes formatos, consulte o nosso atendimento.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Vocês entregam em outras cidades ou estados?</span>
+          <span class="chev">▸</span>
+        </button>
+        <div class="faq-answer">
+          Sim! Enviamos para todo o Brasil com transportadora parceira ou frete contratado pelo cliente.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          <span>Como posso fazer um pedido?</span>
+          <span class="chev">▸</span>
+        </button>
+        <div class="faq-answer">
+          Você pode solicitar pelo WhatsApp, e-mail ou presencialmente em nossa loja — informando arquivo, medidas e quantidade para orçamento.
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center">
+      <a class="btn-green" href="https://wa.me/558171063561" onclick="alert('Abrir WhatsApp (aqui coloque seu link)')">Tirar dúvidas no WhatsApp </a>
+    </div>
+  </section>
+
+  <footer>
+    Você nos encontra na  Av. Dr. Belmino Correia, 26 - Capibaribe, São Lourenço da Mata - PE, 54740-000
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    /* ===== reveal on scroll (IntersectionObserver) ===== */
+    (function(){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) e.target.classList.add('in-view');
+        });
+      }, {threshold: 0.12});
+      document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+    })();
+
+    /* ===== SERVICES HORIZONTAL CAROUSEL - arrows & autoplay ===== */
+    (function(){
+      const carousel = document.getElementById('servicesCarousel');
+      const btnLeft = document.getElementById('btnLeft');
+      const btnRight = document.getElementById('btnRight');
+      const STEP = 320; // px to scroll each click
+      let autoTimer = null;
+
+      function scrollLeft(){ carousel.scrollBy({left: -STEP, behavior:'smooth'}); resetAuto() }
+      function scrollRight(){ carousel.scrollBy({left: STEP, behavior:'smooth'}); resetAuto() }
+
+      btnLeft.addEventListener('click',scrollLeft);
+      btnRight.addEventListener('click',scrollRight);
+
+      // autoplay (pause on hover)
+      function startAuto(){
+        if(autoTimer) return;
+        autoTimer = setInterval(()=> {
+          if((carousel.scrollLeft + carousel.clientWidth) >= carousel.scrollWidth - 10){
+            carousel.scrollTo({left:0, behavior:'smooth'});
+          } else {
+            carousel.scrollBy({left: STEP, behavior:'smooth'});
+          }
+        }, 2800);
+      }
+      function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer = null; } }
+      function resetAuto(){ stopAuto(); setTimeout(startAuto, 2500); }
+
+      carousel.addEventListener('mouseenter', stopAuto);
+      carousel.addEventListener('mouseleave', startAuto);
+      // start autoplay on load
+      startAuto();
+    })();
+
+    /* ===== FAQ toggle (only 1 open at a time) ===== */
+    (function(){
+      const items = document.querySelectorAll('.faq-item');
+      items.forEach(item=>{
+        const btn = item.querySelector('.faq-question');
+        btn.addEventListener('click', ()=>{
+          const isOpen = item.classList.contains('open');
+          // close all
+          items.forEach(i=>{
+            i.classList.remove('open');
+            i.querySelector('.faq-question').setAttribute('aria-expanded','false');
+          });
+          // toggle current
+          if(!isOpen){
+            item.classList.add('open');
+            btn.setAttribute('aria-expanded','true');
+            // put focus to answer for accessibility (optional)
+            const ans = item.querySelector('.faq-answer');
+            if(ans) ans.setAttribute('tabindex','-1');
+          }
+        });
+      });
+    })();
+
+    /* ===== Nice little entrance for cards (stagger) ===== */
+    (function(){
+      const cards = document.querySelectorAll('.card-service');
+      cards.forEach((c,i)=>{
+        c.style.opacity = 0;
+        c.style.transform = 'translateY(12px)';
+        setTimeout(()=>{ c.style.transition = 'opacity .5s ease, transform .5s ease'; c.style.opacity = 1; c.style.transform = 'translateY(0)'; }, 120 + i*80 );
+      });
+    })();
+  </script>
+</body>
+</html>
